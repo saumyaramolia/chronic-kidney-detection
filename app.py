@@ -17,6 +17,7 @@ except Exception as e:
 # Map prediction labels to human-readable output
 prediction_labels = {0: "Not a patient of CKD", 1: "Patient has CKD"}
 
+
 # API endpoint for making predictions
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -41,6 +42,7 @@ def predict():
     except Exception as e:
         print(f"Error predicting: {e}")
         return jsonify({'error': 'An error occurred while predicting.'}), 500
+
 
 if __name__ == '__main__':
     app.run(debug=True)
