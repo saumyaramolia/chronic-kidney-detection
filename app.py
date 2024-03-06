@@ -2,6 +2,7 @@ import pandas as pd
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import pickle
+from sklearn.preprocessing import LabelEncoder
 
 app = FastAPI()
 
@@ -50,6 +51,19 @@ def predict(input_data: PredictionInput):
     try:
         # Convert input data to DataFrame
         input_df = pd.DataFrame([input_data.dict()])
+
+        # Preprocess input data
+        le = LabelEncoder()
+        input_df['red_blood_cells'] = le.fit_transform(input_df['red_blood_cells'])
+        input_df['pus_cell'] = le.fit_transform(input_df['pus_cell'])
+        input_df['pus_cell_clumps'] = le.fit_transform(input_df['pus_cell_clumps'])
+        input_df['bacteria'] = le.fit_transform(input_df['bacteria'])
+        input_df['hypertension'] = le.fit_transform(input_df['hypertension'])
+        input_df['diabetes_mellitus'] = le.fit_transform(input_df['diabetes_mellitus'])
+        input_df['coronary_artery_disease'] = le.fit_transform(input_df['coronary_artery_disease'])
+        input_df['appetite'] = le.fit_transform(input_df['appetite'])
+        input_df['peda_edema'] = le.fit_transform(input_df['peda_edema'])
+        input_df['anemia'] = le.fit_transform(input_df['anemia'])
 
         # Make prediction using the loaded model
         prediction = loaded_model.predict(input_df)
