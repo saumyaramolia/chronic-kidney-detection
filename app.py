@@ -7,8 +7,11 @@ app = Flask(__name__)
 CORS(app)
 
 # Load the serialized model
-with open('kidney_prediction_model.pkl', 'rb') as f:
-    loaded_model = pickle.load(f)
+try:
+    with open('kidney_prediction_model.pkl', 'rb') as f:
+        loaded_model = pickle.load(f)
+except Exception as e:
+    print(f"Error loading model: {e}")
 
 
 # API endpoint for making predictions
@@ -27,7 +30,8 @@ def predict():
         # Return the prediction as JSON response
         return jsonify({'prediction': prediction[0]})
     except Exception as e:
-        return jsonify({'error': str(e)})
+        print(f"Error predicting: {e}")
+        return jsonify({'error': 'An error occurred while predicting.'}), 500
 
 
 if __name__ == '__main__':
