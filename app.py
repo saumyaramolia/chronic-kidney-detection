@@ -1,5 +1,6 @@
 import pandas as pd
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware  # Import CORSMiddleware
 from pydantic import BaseModel
 import pickle
 from sklearn.preprocessing import LabelEncoder
@@ -43,6 +44,16 @@ class PredictionInput(BaseModel):
     appetite: str
     peda_edema: str
     anemia: str
+
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Adjust this according to your needs
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 # Define prediction endpoint
